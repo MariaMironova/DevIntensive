@@ -43,9 +43,9 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/code_lines_number_et"
+                    android:id="@+id/code_lines_et"
                     style="@style/bar_number"
-                    android:text="5"/>
+                    android:text="10000"/>
 
                 <TextView
                     style="@style/bar_text"
@@ -64,7 +64,7 @@
                 <TextView
                     android:id="@+id/projects_et"
                     style="@style/bar_number"
-                    android:text="5"/>
+                    android:text="3"/>
 
                 <TextView
                     style="@style/bar_text"
