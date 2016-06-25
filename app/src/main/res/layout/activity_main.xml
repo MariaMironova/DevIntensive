@@ -157,7 +157,7 @@
                             style="@style/text"
                             android:inputType="textUri"
                             android:hint="@string/vk"
-                            android:text="https://vk.com/id1148811"
+                            android:text="vk.com/id1148811"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -184,7 +184,7 @@
                             style="@style/text"
                             android:inputType="textUri"
                             android:hint="@string/repository"
-                            android:text="https://github.com/MariaMironova"
+                            android:text="github.com/MariaMironova"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
