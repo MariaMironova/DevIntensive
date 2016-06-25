@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">DevIntensive</string>
+    <string name="app_name">Maria Mironova</string>
+    <string name="e_mail">E-mail</string>
+    <string name="about">О себе</string>
+    <string name="phone">Мобильный</string>
+    <string name="project">Проектов</string>
+    <string name="code_lines">Написано строк кода</string>
+    <string name="rank">Рейтинг</string>
+    <string name="vk">Профиль в VK</string>
+    <string name="repository">Репозиторий</string>
+
 </resources>
