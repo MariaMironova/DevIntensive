@@ -17,6 +17,7 @@
     <dimen name="spacing_normal_16">16dp</dimen>
     <dimen name="spacing_small_8">8dp</dimen>
     <dimen name="spacing_tiny_4">4dp</dimen>
+    <dimen name="fab_right_space">8dp</dimen>
 
     <!-- typical sizes of views -->
     <dimen name="button_height_tall_60">60dp</dimen>
@@ -28,4 +29,7 @@
     <dimen name="size_medium_56">56dp</dimen>
     <dimen name="size_large_72">72dp</dimen>
     <dimen name="line_size">2dp</dimen>
+
+    <dimen name="profile_img_size">256dp</dimen>
+    <dimen name="avatar_size">60dp</dimen>
 </resources>
