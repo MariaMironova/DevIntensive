@@ -23,4 +23,9 @@ public interface ConstantManager {
 
     int PERMISSION_REQUEST_SETTINGS_CODE = 101;
     int CAMERA_REQUEST_PERMISSION_CODE = 102;
+
+    int USER_INDEX_PHONE = 21;
+    int USER_INDEX_EMAIL = 22;
+    int USER_INDEX_VK = 23;
+    int USER_INDEX_GIT = 24;
 }

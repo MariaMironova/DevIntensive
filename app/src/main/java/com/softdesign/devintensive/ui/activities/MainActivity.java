@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -44,14 +45,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private DataManager mDataManager;
 
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
     private int mCurrentEditMode = 0;
-    private EditText mUserPhone, mUserEmail, mUserVk, mUserGit, mUserBio;
-    private List<EditText> mUserInfoViews;
 
     private CoordinatorLayout mCoordinatorLayout;
     private Toolbar mToolbar;
@@ -61,16 +64,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private CollapsingToolbarLayout mCollapsingToolbar;
     private ImageView mProfileImage;
 
+
     private AppBarLayout mAppBarLayout;
     private AppBarLayout.LayoutParams mAppBarParams;
 
-    private ImageView mCallImg;
-    private ImageView mEmailImg;
-    private ImageView mVkImg;
-    private ImageView mGitImg;
 
     private File mPhotoFile = null;
     private Uri mSelectedImage = null;
+    private Intent mUserAction;
+
+    @Nullable
+    @BindViews({R.id.phone_et, R.id.email_et, R.id.vk_et, R.id.git_et, R.id.about_et})
+    List<EditText> mUserInfoViews;
+
+    @Nullable
+    @BindViews({R.id.call_img, R.id.email_img, R.id.vk_img, R.id.git_img})
+    List<ImageView> mUserImageViews;
 
 
     @Override
@@ -89,26 +98,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
         mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
 
-        mUserPhone = (EditText) findViewById(R.id.phone_et);
-        mUserEmail = (EditText) findViewById(R.id.email_et);
-        mUserVk = (EditText) findViewById(R.id.vk_et);
-        mUserGit = (EditText) findViewById(R.id.git_et);
-        mUserBio = (EditText) findViewById(R.id.about_et);
 
-        mCallImg = (ImageView) findViewById(R.id.call_img);
-        mEmailImg = (ImageView) findViewById(R.id.email_img);
-        mVkImg = (ImageView) findViewById(R.id.vk_img);
-        mGitImg = (ImageView) findViewById(R.id.git_img);
-
-        mUserInfoViews = new ArrayList<>();
-        mUserInfoViews.add(mUserPhone);
-        mUserInfoViews.add(mUserEmail);
-        mUserInfoViews.add(mUserVk);
-        mUserInfoViews.add(mUserGit);
-        mUserInfoViews.add(mUserBio);
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
+
+        ButterKnife.bind(this);
+        if (mUserInfoViews != null) {
+            ButterKnife.apply(mUserInfoViews);
+        }
+        if (mUserImageViews != null) {
+            ButterKnife.apply(mUserImageViews);
+        }
+
+        for( ImageView iv : mUserImageViews){
+            iv.setOnClickListener(this);
+        }
 
         setupToolbar();
         setupDrawer();
@@ -187,9 +192,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.profile_placeholder:
                 showDialog(ConstantManager.LOAD_PROFILE_PHOTO);
                 break;
-            case R.id.call_img:
-                dialNumber(mUserPhone.getText().toString());
-                break;
+
         }
     }
 
