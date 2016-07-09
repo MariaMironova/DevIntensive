@@ -5,6 +5,7 @@
 
     <!-- font sizes -->
     <dimen name="font_larger_22">22sp</dimen>
+    <dimen name="font_large_20">20sp</dimen>
     <dimen name="font_large_18">18sp</dimen>
     <dimen name="font_normal_15">15sp</dimen>
     <dimen name="font_small_12">12sp</dimen>
@@ -13,7 +14,9 @@
 
     <dimen name="spacing_large_72">72dp</dimen>
     <dimen name="spacing_medial_24">24dp</dimen>
+    <dimen name="spacing_normal_28">28dp</dimen>
     <dimen name="spacing_medium_32">32dp</dimen>
+    <dimen name="spacing_middle_48">48dp</dimen>
     <dimen name="spacing_normal_16">16dp</dimen>
     <dimen name="spacing_small_8">8dp</dimen>
     <dimen name="spacing_tiny_4">4dp</dimen>
@@ -28,8 +31,15 @@
     <dimen name="size_small_24">24dp</dimen>
     <dimen name="size_medium_56">56dp</dimen>
     <dimen name="size_large_72">72dp</dimen>
+    <dimen name="size_tiny_4">4dp</dimen>
     <dimen name="line_size">2dp</dimen>
+    <dimen name="thick_line_size">1dp</dimen>
 
     <dimen name="profile_img_size">256dp</dimen>
     <dimen name="avatar_size">60dp</dimen>
+    <dimen name="placeholder_img_90">90dp</dimen>
+    <dimen name="auth_button_width_240">240dp</dimen>
+    <dimen name="radius_3">3dp</dimen>
+    <dimen name="elevation_8">8dp</dimen>
+
 </resources>

@@ -26,7 +26,7 @@
                 <TextView
                     android:id="@+id/rank_et"
                     style="@style/bar_number"
-                    android:text="5"/>
+                    android:text="@string/rank_5"/>
                 <TextView
                     style="@style/bar_text"
                     android:text="@string/rank"/>
@@ -44,7 +44,7 @@
                 <TextView
                     android:id="@+id/code_lines_et"
                     style="@style/bar_number"
-                    android:text="10000"/>
+                    android:text="@string/number_of_codelines"/>
 
                 <TextView
                     style="@style/bar_text"
@@ -63,7 +63,7 @@
                 <TextView
                     android:id="@+id/projects_et"
                     style="@style/bar_number"
-                    android:text="3"/>
+                    android:text="@string/num_of_projects"/>
 
                 <TextView
                     style="@style/bar_text"
@@ -93,7 +93,7 @@
                             style="@style/text"
                             android:inputType="phone"
                             android:hint="@string/phone"
-                            android:text="+7 (916) 603-38-19"
+                            android:text="@string/user_phone_number"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -122,12 +122,13 @@
                             style="@style/text"
                             android:inputType="textEmailAddress"
                             android:hint="@string/e_mail"
-                            android:text="masha.a.mironova@ya.ru"
+                            android:text="@string/user_email"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/email_img"
                     style="@style/icon.right"
                     android:src="@drawable/ic_send_black_24dp"/>
             </LinearLayout>
@@ -151,12 +152,13 @@
                             style="@style/text"
                             android:inputType="textUri"
                             android:hint="@string/vk"
-                            android:text="vk.com/id1148811"
+                            android:text="@string/user_vk"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/vk_img"
                     style="@style/icon.right"
                     android:src="@drawable/ic_visibility_black_24dp"/>
             </LinearLayout>
@@ -178,12 +180,13 @@
                             style="@style/text"
                             android:inputType="textUri"
                             android:hint="@string/repository"
-                            android:text="github.com/MariaMironova"
+                            android:text="@string/user_git"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/git_img"
                     style="@style/icon.right"
                     android:src="@drawable/ic_visibility_black_24dp"/>
             </LinearLayout>
@@ -207,7 +210,7 @@
                             style="@style/text"
                             android:inputType="textMultiLine"
                             android:hint="@string/about"
-                            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                            android:text="@string/user_about"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>

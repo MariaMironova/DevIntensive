@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/spacing_normal_16"
     android:paddingLeft="@dimen/spacing_normal_16"
     android:paddingBottom="@dimen/spacing_small_8"
-    android:background="@drawable/background_img">
+    android:background="@drawable/nav_header_bg">
 
     <com.softdesign.devintensive.utils.CircleView
         android:layout_width="@dimen/avatar_size"
