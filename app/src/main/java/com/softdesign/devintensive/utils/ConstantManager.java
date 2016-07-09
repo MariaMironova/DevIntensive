@@ -28,4 +28,5 @@ public interface ConstantManager {
     int USER_INDEX_EMAIL = 22;
     int USER_INDEX_VK = 23;
     int USER_INDEX_GIT = 24;
+    int PHONE_REQUEST_PERMISSION_CODE = 104;
 }

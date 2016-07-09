@@ -1,5 +1,6 @@
 package com.softdesign.devintensive.ui.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -48,6 +49,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -176,6 +178,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Log.d(TAG, "onDestroy");
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -192,9 +195,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.profile_placeholder:
                 showDialog(ConstantManager.LOAD_PROFILE_PHOTO);
                 break;
-
+            case R.id.call_img:
+                dialNumber(mUserInfoViews.get(0).getText().toString().trim());
+                showSnackbar(mUserInfoViews.get(0).getText().toString().trim());
+                break;
+            case R.id.vk_img:
+                viewUrl(mUserInfoViews.get(2).getText().toString().trim());
+                break;
+            case R.id.git_img:
+                viewUrl(mUserInfoViews.get(3).getText().toString().trim());
+                break;
         }
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -326,8 +339,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     ConstantManager.CAMERA_REQUEST_PERMISSION_CODE);
-            Snackbar.make(mCoordinatorLayout, "Для корректной работы приложения необходимо дать требуемые разрешения", Snackbar.LENGTH_LONG)
-                    .setAction("Разрешить", new View.OnClickListener() {
+            Snackbar.make(mCoordinatorLayout, R.string.permission_request, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.allow, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             openApplicationSettings();
@@ -426,15 +439,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         startActivityForResult(appSettingsIntent, ConstantManager.PERMISSION_REQUEST_SETTINGS_CODE);
     }
 
+
     private void dialNumber(String number) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + number));
-        intent.setData(Uri.parse("tel:" + number));
-        startActivity(intent);
+        Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+
+        if (dialIntent.resolveActivity(getPackageManager()) != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.CALL_PHONE
+                }, ConstantManager.PHONE_REQUEST_PERMISSION_CODE);
+
+                Snackbar.make(mCoordinatorLayout,
+                        R.string.permission_request,
+                        Snackbar.LENGTH_LONG)
+                        .setAction(R.string.allow, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                openApplicationSettings();
+                            }
+                        }).show();
+                return;
+            }
+        }
+
+        startActivity(dialIntent);
     }
 
     private void viewUrl(String url) {
-        Uri address = Uri.parse("https://" + url);
-        Intent linkIntent = new Intent(Intent.ACTION_VIEW, address);
-        startActivity(linkIntent);
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + url));
+        startActivity(viewIntent);
     }
 }

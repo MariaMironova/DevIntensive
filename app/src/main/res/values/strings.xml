@@ -17,7 +17,7 @@
     <string name="rank_5">5</string>
     <string name="number_of_codelines">10000</string>
     <string name="num_of_projects">3</string>
-    <string name="user_phone_number">+7 (916) 603-38-19</string>
+    <string name="user_phone_number">+7 (916) 693-36-08</string>
     <string name="user_email">masha.a.mironova@ya.ru</string>
     <string name="user_vk">vk.com/id1148811</string>
     <string name="user_git">github.com/MariaMironova</string>
@@ -25,5 +25,7 @@
     <string name="auth_text">ВОЙТИ</string>
     <string name="fogot_password_text">Забыли пароль?</string>
     <string name="password">Пароль</string>
-`
+    <string name="permission_request">Для корректной работы приложения необходимо дать требуемые разрешения</string>
+    <string name="allow">Разрешить</string>
+    `
 </resources>
