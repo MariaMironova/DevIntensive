@@ -41,5 +41,6 @@
     <dimen name="auth_button_width_240">240dp</dimen>
     <dimen name="radius_3">3dp</dimen>
     <dimen name="elevation_8">8dp</dimen>
+    <dimen name="user_info_header">112dp</dimen>
 
 </resources>

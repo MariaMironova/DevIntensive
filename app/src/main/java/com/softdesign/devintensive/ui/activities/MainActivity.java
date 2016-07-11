@@ -197,7 +197,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.call_img:
                 dialNumber(mUserInfoViews.get(0).getText().toString().trim());
-                showSnackbar(mUserInfoViews.get(0).getText().toString().trim());
                 break;
             case R.id.vk_img:
                 viewUrl(mUserInfoViews.get(2).getText().toString().trim());
