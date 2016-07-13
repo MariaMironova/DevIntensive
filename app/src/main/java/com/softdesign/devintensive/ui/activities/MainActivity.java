@@ -33,9 +33,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
+import com.softdesign.devintensive.utils.CircleView;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.squareup.picasso.Picasso;
 
@@ -46,10 +48,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private RelativeLayout mProfilePlaceholder;
     private CollapsingToolbarLayout mCollapsingToolbar;
     private ImageView mProfileImage;
+    private CircleView mAvatar;
 
 
     private AppBarLayout mAppBarLayout;
@@ -83,6 +84,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindViews({R.id.call_img, R.id.email_img, R.id.vk_img, R.id.git_img})
     List<ImageView> mUserImageViews;
 
+    @Nullable
+    @BindViews({R.id.rank_et, R.id.code_lines_et, R.id.projects_et})
+    List<TextView> mUserValuesViews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
         mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
+        mAvatar = (CircleView) findViewById(R.id.avatar);
 
 
 
@@ -108,6 +114,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ButterKnife.bind(this);
         if (mUserInfoViews != null) {
             ButterKnife.apply(mUserInfoViews);
+        }
+        if (mUserValuesViews != null) {
+            ButterKnife.apply(mUserValuesViews);
         }
         if (mUserImageViews != null) {
             ButterKnife.apply(mUserImageViews);
@@ -119,11 +128,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         setupToolbar();
         setupDrawer();
-        //loadUserInfoValue();
+        initUserFields();
+        initUserInfoValues();
+        initUserImages();
+        /*
         Picasso.with(this)
                 .load(mDataManager.getPreferencesManager().loadUserPhoto())
                 .placeholder(R.drawable.dandelion_photo)
-                .into(mProfileImage);
+                .into(mProfileImage);*/
 
         if (savedInstanceState == null) {
 
@@ -298,19 +310,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void loadUserInfoValue() {
-        List<String> userData = DataManager.getInstance().getPreferencesManager().loadUserProfileData();
+    private void initUserFields() {
+        List<String> userData = mDataManager.getPreferencesManager().loadUserProfileData();
         for (int i = 0; i < userData.size(); i++) {
             mUserInfoViews.get(i).setText(userData.get(i));
         }
     }
 
-    private void saveUserInfoValue() {
+    private void saveUserFields() {
         List<String> userData = new ArrayList<>();
         for (EditText userFieldView : mUserInfoViews) {
             userData.add(userFieldView.getText().toString());
         }
         DataManager.getInstance().getPreferencesManager().saveUserProfileData(userData);
+    }
+
+    private void initUserInfoValues() {
+        List<String> userData = mDataManager.getPreferencesManager().loadUserProfileValues();
+        for (int i = 0; i < userData.size(); i++) {
+            mUserValuesViews.get(i).setText(userData.get(i));
+        }
+    }
+
+    private void saveUserInfoValues() {
+
+    }
+
+    private void initUserImages() {
+        Uri photo = mDataManager.getPreferencesManager().loadUserPhoto();
+        Uri avatar = mDataManager.getPreferencesManager().loadAvatarImg();
+        insertProfileImage(photo);
+       // insertAvatarImage(avatar);
     }
 
     private void loadPhotoFromGallery() {
@@ -434,6 +464,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDataManager.getPreferencesManager().saveUserPhoto(selectedImage);
     }
 
+    private void insertAvatarImage(Uri selectedImage) {
+        Picasso.with(this)
+                .load(selectedImage)
+                .into(mAvatar);
+        mDataManager.getPreferencesManager().saveAvatarImg(selectedImage);
+    }
     private void openApplicationSettings() {
         Intent appSettingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
         startActivityForResult(appSettingsIntent, ConstantManager.PERMISSION_REQUEST_SETTINGS_CODE);

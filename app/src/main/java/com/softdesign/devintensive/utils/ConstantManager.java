@@ -16,6 +16,12 @@ public interface ConstantManager {
     String USER_GIT_KEY = "USER_4_KEY";
     String USER_BIO_KEY = "USER_5_KEY";
     String USER_PHOTO_KEY = "USER_PHOTO_KEY";
+    String USER_ID_KEY = "USER_ID_KEY";
+    String AUTH_TOKEN_KEY = "AUTH_TOKEN_KEY";
+    String USER_RATING_VALUE = "USER_RATING_VALUE";
+    String USER_CODE_LINES_VALUE = "USER_CODE_LINES_VALUE";
+    String USER_PROJECTS_VALUE = "USER_PROJECTS_VALUE";
+    String USER_AVATAR_KEY = "USER_AVATAR_KEY";
 
     int LOAD_PROFILE_PHOTO = 1;
     int REQUEST_CAMERA_PICTURE = 99;
@@ -24,9 +30,5 @@ public interface ConstantManager {
     int PERMISSION_REQUEST_SETTINGS_CODE = 101;
     int CAMERA_REQUEST_PERMISSION_CODE = 102;
 
-    int USER_INDEX_PHONE = 21;
-    int USER_INDEX_EMAIL = 22;
-    int USER_INDEX_VK = 23;
-    int USER_INDEX_GIT = 24;
     int PHONE_REQUEST_PERMISSION_CODE = 104;
 }
