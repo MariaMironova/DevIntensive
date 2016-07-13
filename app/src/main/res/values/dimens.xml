@@ -39,8 +39,11 @@
     <dimen name="avatar_size">60dp</dimen>
     <dimen name="placeholder_img_90">90dp</dimen>
     <dimen name="auth_button_width_240">240dp</dimen>
-    <dimen name="radius_3">3dp</dimen>
+    <dimen name="radius_2">2dp</dimen>
     <dimen name="elevation_8">8dp</dimen>
     <dimen name="user_info_header">112dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
+    <dimen name="font_14">14dp</dimen>
+    <dimen name="min_btn_width">126dp</dimen>
 
 </resources>

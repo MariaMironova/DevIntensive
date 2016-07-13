@@ -27,5 +27,12 @@
     <string name="password">Пароль</string>
     <string name="permission_request">Для корректной работы приложения необходимо дать требуемые разрешения</string>
     <string name="allow">Разрешить</string>
+    <string name="auth.e_mail">E-mail</string>
+    <string name="auth.login">ВОЙТИ</string>
+    <string name="auth.remember">Забыли пароль?</string>
+    <string name="auth.incorrect">неверный логин или пароль</string>
+    <string name="forgot_uri">http://devintensive.softdesign-apps.ru/forgotpass</string>
+    <string name="auth.ups">Упс.. Что-то пошло не так..</string>
+    <string name="auth.network_not_available">Сеть в данный момент не доступна, попробуйте позже</string>
     `
 </resources>
