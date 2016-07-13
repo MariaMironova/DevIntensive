@@ -2,6 +2,7 @@ package com.softdesign.devintensive.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -15,9 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * Created by Android on 29.06.2016.
- */
 public class CircleView extends ImageView {
 
     public CircleView(Context context) {
@@ -33,13 +31,28 @@ public class CircleView extends ImageView {
     }
 
     @Override
+    public void setImageResource(int resId) {
+        Bitmap avatar = BitmapFactory.decodeResource(getResources(), resId);
+        this.setImageBitmap(avatar);
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        RoundedAvatarDrawable drawableAvatar = new RoundedAvatarDrawable(bm);
+        this.setImageDrawable(drawableAvatar);
+    }
+
+    @Override
     public void setImageDrawable(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            RoundedAvatarDrawable roundedDrawable = new RoundedAvatarDrawable(bitmap);
-            super.setImageDrawable(roundedDrawable);
-        } else {
+        RoundedAvatarDrawable roundedAvatarDrawable;
+
+        if (drawable instanceof RoundedAvatarDrawable){
             super.setImageDrawable(drawable);
+        }
+        else{
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            roundedAvatarDrawable = new RoundedAvatarDrawable(bitmap);
+            super.setImageDrawable(roundedAvatarDrawable);
         }
     }
 
