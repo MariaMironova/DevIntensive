@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/radius_2"
+    android:layout_marginTop="@dimen/elevation_8"
+    app:cardBackgroundColor="@color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.softdesign.devintensive.ui.views.AspectRatioImageView
+                android:id="@+id/user_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dandelion_photo"
+                android:scaleType="centerCrop"
+                app:aspect_ratio="1.78"/>
+            <TextView
+                android:id="@+id/user_full_name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Фамилия Имя"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="@dimen/font_large_24"
+                android:paddingLeft="@dimen/spacing_normal_16"
+                android:paddingRight="@dimen/spacing_normal_16"
+                android:paddingBottom="@dimen/spacing_medial_24"
+                android:layout_gravity="bottom"/>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_large_72"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.25">
+
+                <TextView
+                    android:id="@+id/rating_txt"
+                    style="@style/item_text_view"/>
+                <TextView
+                    style="@style/item_tv_strings"
+                    android:text="@string/rank"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:id="@+id/code_lines_txt"
+                    style="@style/item_text_view"/>
+
+                <TextView
+                    style="@style/item_tv_strings"
+                    android:text="Написано строк кода"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.25">
+
+                <TextView
+                    android:id="@+id/projects_txt"
+                    style="@style/item_text_view"/>
+
+                <TextView
+                    style="@style/item_tv_strings"
+                    android:text="Проектов"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bio_txt"
+            android:textColor="@color/light_grey"
+            android:text="@string/user_about"
+            android:maxLines="3"
+            android:paddingRight="@dimen/spacing_normal_16"
+            android:paddingLeft="@dimen/spacing_normal_16"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="@dimen/font_14"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_size"
+            android:background="@color/light_grey"
+            android:layout_marginTop="@dimen/spacing_normal_16"
+            android:layout_marginBottom="@dimen/spacing_small_8"/>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/more_info_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button.view"
+            android:textColor="@color/auth_red"
+            android:paddingRight="@dimen/spacing_normal_16"
+            android:paddingLeft="@dimen/spacing_normal_16"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

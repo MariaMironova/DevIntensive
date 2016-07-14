@@ -93,7 +93,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
                     } else if (response.code() == 404) {
                         showSnackbar(getString(R.string.auth_incorrect));
                     } else {
-                        showSnackbar(getString(R.string.auth_ups));
+                        showSnackbar(getString(R.string.ups));
                     }
                 }
 

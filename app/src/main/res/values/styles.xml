@@ -122,4 +122,27 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="item_text_view">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">0</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/font_large_20</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="item_tv_strings">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-condensed</item>
+        <item name="android:textSize">@dimen/font_14</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

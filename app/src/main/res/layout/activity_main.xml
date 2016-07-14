@@ -67,6 +67,7 @@
                 </RelativeLayout>
             </FrameLayout>
 
+        </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:theme="@style/AppTheme.PopupOverlay"
@@ -74,7 +75,7 @@
             android:layout_height="?attr/actionBarSize"
             android:titleTextColor="@color/white"
             app:layout_collapseMode="pin"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
