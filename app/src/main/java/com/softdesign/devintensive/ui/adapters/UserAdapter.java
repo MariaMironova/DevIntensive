@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
@@ -17,18 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder>{
-    Context mContext;
-    List<UserListRes.UserData> mUsers;
+    private Context mContext;
+    private List<UserListRes.UserData> mUsers;
+    private UserViewHolder.CustomClickListener mClickListener;
 
-    public UserAdapter(List<UserListRes.UserData> users) {
+    public UserAdapter(List<UserListRes.UserData> users, UserViewHolder.CustomClickListener customClickListener) {
         mUsers = users;
+        mClickListener = customClickListener;
     }
 
     @Override
     public UserAdapter.UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_list, parent, false);
-        return new UserViewHolder(convertView);
+        View convertView = LayoutInflater.from(mContext).inflate(R.layout.item_user_list, parent, false);
+        return new UserViewHolder(convertView, mClickListener);
     }
 
     @Override
@@ -42,9 +45,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 .into(holder.userPhoto);
 
         holder.mFullName.setText(user.getFullName());
-        holder.mRatio.setText(user.getProfileValues().getRaiting());
-        holder.mCodeLines.setText(user.getProfileValues().getLinesCode());
-        holder.mProjects.setText(user.getProfileValues().getProjects());
+        holder.mRatio.setText(String.valueOf(user.getProfileValues().getRaiting()));
+        holder.mCodeLines.setText(String.valueOf(user.getProfileValues().getLinesCode()));
+        holder.mProjects.setText(String.valueOf(user.getProfileValues().getProjects()));
         if (user.getPublicInfo().getBio() == null || user.getPublicInfo().getBio().isEmpty()) {
             holder.mBio.setVisibility(View.GONE);
         } else {
@@ -55,22 +58,44 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mUsers.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
+    public static class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected AspectRatioImageView userPhoto;
         protected TextView mFullName, mRatio, mCodeLines, mProjects, mBio;
+        protected Button mShowMore;
 
-        public UserViewHolder(View itemView) {
+        private CustomClickListener mListener;
+
+        public UserViewHolder(View itemView, CustomClickListener customClickListener) {
             super(itemView);
+
+            this.mListener = customClickListener;
 
             userPhoto = (AspectRatioImageView) itemView.findViewById(R.id.user_photo);
             mFullName = (TextView) itemView.findViewById(R.id.user_full_name_txt);
             mRatio = (TextView) itemView.findViewById(R.id.rating_txt);
             mCodeLines = (TextView) itemView.findViewById(R.id.code_lines_txt);
-            mProjects = (TextView) itemView.findViewById(R.id.projects_et);
+            mProjects = (TextView) itemView.findViewById(R.id.projects_txt);
             mBio = (TextView) itemView.findViewById(R.id.bio_txt);
+            mShowMore = (Button) itemView.findViewById(R.id.more_info_btn);
+
+            mShowMore.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                mListener.onUserItemClickListener(getAdapterPosition());
+            }
+
+        }
+
+        public interface CustomClickListener {
+            void onUserItemClickListener(int position);
         }
     }
+
+
 }
