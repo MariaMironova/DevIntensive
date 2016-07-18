@@ -93,7 +93,7 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
                     } else if (response.code() == 404) {
                         showSnackbar(getString(R.string.auth_incorrect));
                     } else {
-                        showSnackbar(getString(R.string.auth_ups));
+                        showSnackbar(getString(R.string.ups));
                     }
                 }
 
@@ -128,6 +128,6 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
 
     private void saveUserImages(UserModelRes userModel) {
         mDataManager.getPreferencesManager().saveUserPhoto(Uri.parse(userModel.getData().getUser().getPublicInfo().getPhoto()));
-        //mDataManager.getPreferencesManager().saveAvatarImg(Uri.parse(userModel.getData().getUser().getPublicInfo().getAvatar()));
+        mDataManager.getPreferencesManager().saveAvatarImg(Uri.parse(userModel.getData().getUser().getPublicInfo().getAvatar()));
     }
 }

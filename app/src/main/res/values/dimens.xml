@@ -45,5 +45,7 @@
     <dimen name="spacing_20">20dp</dimen>
     <dimen name="font_14">14dp</dimen>
     <dimen name="min_btn_width">126dp</dimen>
+    <dimen name="spacing_large_56">56dp</dimen>
+    <dimen name="font_large_24">24sp</dimen>
 
 </resources>

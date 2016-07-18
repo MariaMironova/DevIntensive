@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
-import com.softdesign.devintensive.utils.CircleView;
 import com.softdesign.devintensive.utils.ConstantManager;
 import com.squareup.picasso.Picasso;
 
@@ -48,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
@@ -58,23 +58,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = ConstantManager.TAG_PREFIX + "Main Activity";
     private int mCurrentEditMode = 0;
 
-    private CoordinatorLayout mCoordinatorLayout;
-    private Toolbar mToolbar;
-    private DrawerLayout mNavigationDrawer;
-    private FloatingActionButton mFab;
-    private RelativeLayout mProfilePlaceholder;
-    private CollapsingToolbarLayout mCollapsingToolbar;
-    private ImageView mProfileImage;
-    private CircleView mAvatar;
+    @BindView(R.id.main_coordinator_container)
+    CoordinatorLayout mCoordinatorLayout;
 
+    @BindView(R.id.navigation_drawer)
+    DrawerLayout mNavigationDrawer;
 
-    private AppBarLayout mAppBarLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+
+    @BindView(R.id.profile_placeholder)
+    RelativeLayout mProfilePlaceholder;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+
+    @BindView(R.id.user_photo_img)
+    ImageView mProfileImage;
+
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppBarLayout;
     private AppBarLayout.LayoutParams mAppBarParams;
-
-
-    private File mPhotoFile = null;
-    private Uri mSelectedImage = null;
-    private Intent mUserAction;
 
     @Nullable
     @BindViews({R.id.phone_et, R.id.email_et, R.id.vk_et, R.id.git_et, R.id.about_et})
@@ -88,6 +98,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindViews({R.id.rank_et, R.id.code_lines_et, R.id.projects_et})
     List<TextView> mUserValuesViews;
 
+    private File mPhotoFile = null;
+    private Uri mSelectedImage = null;
+    private Intent mUserAction;
+    private ImageView mAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,22 +110,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Log.d(TAG, "onCreate");
 
         mDataManager = DataManager.getInstance();
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator_container);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mProfilePlaceholder = (RelativeLayout) findViewById(R.id.profile_placeholder);
-        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-        mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
-        mAvatar = (CircleView) findViewById(R.id.avatar);
-
-
+        ButterKnife.bind(this);
 
         mFab.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
 
-        ButterKnife.bind(this);
+
         if (mUserInfoViews != null) {
             ButterKnife.apply(mUserInfoViews);
         }
@@ -131,11 +135,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initUserFields();
         initUserInfoValues();
         initUserImages();
-        /*
-        Picasso.with(this)
-                .load(mDataManager.getPreferencesManager().loadUserPhoto())
-                .placeholder(R.drawable.dandelion_photo)
-                .into(mProfileImage);*/
 
         if (savedInstanceState == null) {
 
@@ -202,6 +201,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 else {
                     changeEditMode(0);
                     mCurrentEditMode = 0;
+                    saveUserFields();
                 }
                 break;
             case R.id.profile_placeholder:
@@ -209,7 +209,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.call_img:
                 dialNumber(mUserInfoViews.get(0).getText().toString().trim());
-                showSnackbar(mUserInfoViews.get(0).getText().toString().trim());
                 break;
             case R.id.vk_img:
                 viewUrl(mUserInfoViews.get(2).getText().toString().trim());
@@ -254,6 +253,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setupDrawer() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mAvatar = (ImageView) findViewById(R.id.avatar_img);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -333,14 +333,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void saveUserInfoValues() {
+        List<String> userData = new ArrayList<>();
 
+        for (TextView userInfo : mUserValuesViews) {
+            userData.add(userInfo.getText().toString());
+        }
+
+        mDataManager.getPreferencesManager().saveUserProfileData(userData);
     }
 
     private void initUserImages() {
-        Uri photo = mDataManager.getPreferencesManager().loadUserPhoto();
-        Uri avatar = mDataManager.getPreferencesManager().loadAvatarImg();
-        insertProfileImage(photo);
-       // insertAvatarImage(avatar);
+        Picasso.with(this).
+                load(mDataManager.getPreferencesManager().
+                        loadUserPhoto()).
+                placeholder(R.drawable.nav_header_bg).
+                into(mProfileImage);
+
+
+
     }
 
     private void loadPhotoFromGallery() {
@@ -464,12 +474,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDataManager.getPreferencesManager().saveUserPhoto(selectedImage);
     }
 
-    private void insertAvatarImage(Uri selectedImage) {
-        Picasso.with(this)
-                .load(selectedImage)
-                .into(mAvatar);
-        mDataManager.getPreferencesManager().saveAvatarImg(selectedImage);
-    }
     private void openApplicationSettings() {
         Intent appSettingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
         startActivityForResult(appSettingsIntent, ConstantManager.PERMISSION_REQUEST_SETTINGS_CODE);

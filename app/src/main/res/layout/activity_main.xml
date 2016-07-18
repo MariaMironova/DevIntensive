@@ -67,6 +67,7 @@
                 </RelativeLayout>
             </FrameLayout>
 
+        </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:theme="@style/AppTheme.PopupOverlay"
@@ -74,7 +75,7 @@
             android:layout_height="?attr/actionBarSize"
             android:titleTextColor="@color/white"
             app:layout_collapseMode="pin"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
@@ -143,12 +144,13 @@
         app:layout_anchorGravity="bottom|right"
         android:layout_marginRight="@dimen/fab_right_space"/>
   </android.support.design.widget.CoordinatorLayout>
+
   <android.support.design.widget.NavigationView
       android:id="@+id/navigation_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="left"
       app:headerLayout="@layout/drawer_header"
-      app:menu="@menu/drawer_menu"></android.support.design.widget.NavigationView>
+      app:menu="@menu/drawer_menu"/>
  </android.support.v4.widget.DrawerLayout>
 

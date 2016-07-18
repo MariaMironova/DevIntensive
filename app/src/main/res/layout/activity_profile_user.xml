@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_coordinator_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="contentDescription">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/grey"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+            <ImageView
+                android:id="@+id/user_photo_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_img_size"
+                android:fitsSystemWindows="true"
+                android:background="@color/grey_background"
+                android:scaleType="centerCrop" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/AppTheme.PopupOverlay"
+                app:layout_collapseMode="pin" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/user_info_header"
+        android:background="@color/grey"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_behavior=".ui.behaviors.UserInfoBehavior"
+        app:behavior_min_height = "56dp"
+        >
+        <LinearLayout
+            style="@style/user_info_item"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:id="@+id/rank_et"
+                style="@style/bar_number"/>
+            <TextView
+                style="@style/bar_text"
+                android:text="@string/rank"/>
+        </LinearLayout>
+
+        <View style="@style/vertical_line"/>
+
+        <LinearLayout
+            style="@style/user_info_item"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:id="@+id/code_lines_et"
+                style="@style/bar_number"/>
+
+            <TextView
+                style="@style/bar_text"
+                android:text="@string/code_lines"/>
+        </LinearLayout>
+
+        <View style="@style/vertical_line"/>
+
+        <LinearLayout
+            style="@style/user_info_item"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:id="@+id/projects_et"
+                style="@style/bar_number"/>
+
+            <TextView
+                style="@style/bar_text"
+                android:text="@string/project"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/static_profile_content"/>
+
+</android.support.design.widget.CoordinatorLayout>
+
+
