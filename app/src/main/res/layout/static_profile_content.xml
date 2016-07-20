@@ -2,10 +2,13 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_behavior=".ui.behaviors.CustomNestedScrollBehavior"
-    >
+    tools:ignore="contentDescription">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +43,8 @@
                     android:src="@drawable/ic_about_24dp"/>
 
                 <LinearLayout
-                    style="@style/field">
+                    style="@style/field"
+                    android:layout_height="wrap_content">
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -50,7 +54,6 @@
                             style="@style/text"
                             android:inputType="textMultiLine"
                             android:hint="@string/about"
-                            android:text="@string/user_about"
                             />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>

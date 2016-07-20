@@ -55,6 +55,10 @@ public class UserModelRes {
         @Expose
         private String updated;
 
+        public String getFullName() {
+            return firstName + " " + secondName;
+        }
+
         public String getId() {
             return id;
         }
@@ -101,6 +105,10 @@ public class UserModelRes {
         @SerializedName("title")
         @Expose
         private String title;
+
+        public String getId() {
+            return id;
+        }
 
         public String getGit() {
             return git;

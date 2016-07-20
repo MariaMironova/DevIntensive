@@ -4,8 +4,10 @@ package com.softdesign.devintensive.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +16,16 @@ import android.widget.TextView;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
 import com.softdesign.devintensive.data.network.req.UserLoginRequest;
+import com.softdesign.devintensive.data.network.res.UserListRes;
 import com.softdesign.devintensive.data.network.res.UserModelRes;
+import com.softdesign.devintensive.data.storage.models.Repository;
+import com.softdesign.devintensive.data.storage.models.RepositoryDao;
+import com.softdesign.devintensive.data.storage.models.User;
+import com.softdesign.devintensive.data.storage.models.UserDTO;
+import com.softdesign.devintensive.data.storage.models.UserDao;
+import com.softdesign.devintensive.ui.adapters.UserAdapter;
+import com.softdesign.devintensive.utils.AppConfig;
+import com.softdesign.devintensive.utils.ConstantManager;
 import com.softdesign.devintensive.utils.NetworkStatusChecker;
 
 import java.util.ArrayList;
@@ -33,6 +44,8 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     private EditText mLogin, mPassword;
     private CoordinatorLayout mCoordinatorLayout;
     private DataManager mDataManager;
+    private RepositoryDao mRepositoryDao;
+    private UserDao mUserDao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +53,9 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.authorization);
 
         mDataManager = DataManager.getInstance();
+        mUserDao = mDataManager.getDaoSession().getUserDao();
+        mRepositoryDao = mDataManager.getDaoSession().getRepositoryDao();
+
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator_container);
         mSignIn = (Button) findViewById(R.id.login_btn);
         mRememberPassword  = (TextView) findViewById(R.id.remember_txt);
@@ -77,9 +93,17 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
         saveUserValues(userModel);
         saveUserFields(userModel);
         saveUserImages(userModel);
+        mDataManager.getPreferencesManager().saveFullName(userModel.getData().getUser().getFullName());
+        saveUserInDb();
 
-        Intent loginIntent = new Intent(this, MainActivity.class);
-        startActivity(loginIntent);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent loginIntent = new Intent(AuthActivity.this, UserListActivity.class);
+                startActivity(loginIntent);
+            }
+        }, AppConfig.START_DELAY);
     }
 
     private void signIn() {
@@ -129,5 +153,53 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener {
     private void saveUserImages(UserModelRes userModel) {
         mDataManager.getPreferencesManager().saveUserPhoto(Uri.parse(userModel.getData().getUser().getPublicInfo().getPhoto()));
         mDataManager.getPreferencesManager().saveAvatarImg(Uri.parse(userModel.getData().getUser().getPublicInfo().getAvatar()));
+    }
+
+    private void saveUserInDb() {
+        Call<UserListRes> call = mDataManager.getUserListFromNetwork();
+
+        call.enqueue(new Callback<UserListRes>() {
+            @Override
+            public void onResponse(Call<UserListRes> call, Response<UserListRes> response) {
+                try {
+
+                    if (response.code() == 200) {
+                        List<Repository> allRepositories = new ArrayList<Repository>();
+                        List<User> allUsers = new ArrayList<User>();
+
+                        for (UserListRes.UserData userRes: response.body().getData()) {
+                            allRepositories.addAll(getRepoListFromUserRes(userRes));
+                            allUsers.add(new User(userRes));
+                        }
+                        mRepositoryDao.insertOrReplaceInTx(allRepositories);
+                        mUserDao.insertOrReplaceInTx(allUsers);
+
+                    } else {
+                        showSnackbar("Cписок пользователей не может быть получен");
+                        Log.e(TAG, "onResponse: " + String.valueOf(response.errorBody().source()));
+                    }
+
+                } catch (NullPointerException e) {
+                    Log.e(TAG, e.toString());
+                    showSnackbar(getString(R.string.ups));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<UserListRes> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private List<Repository> getRepoListFromUserRes(UserListRes.UserData userData) {
+        final String userId = userData.getId();
+
+        List<Repository> repositories = new ArrayList<>();
+        for (UserModelRes.Repo repo: userData.getRepositories().getRepo()) {
+            repositories.add(new Repository(repo, userId));
+        }
+        return repositories;
     }
 }
