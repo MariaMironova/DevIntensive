@@ -10,12 +10,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -23,24 +21,22 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
+import com.redmadrobot.chronos.ChronosConnector;
 import com.softdesign.devintensive.R;
 import com.softdesign.devintensive.data.managers.DataManager;
-import com.softdesign.devintensive.data.network.res.UserListRes;
+import com.softdesign.devintensive.utils.AppConfig;
+import com.softdesign.devintensive.utils.LoadFromDb;
 import com.softdesign.devintensive.data.storage.models.User;
 import com.softdesign.devintensive.data.storage.models.UserDTO;
 import com.softdesign.devintensive.ui.adapters.UserAdapter;
-import com.softdesign.devintensive.utils.AppConfig;
 import com.softdesign.devintensive.utils.ConstantManager;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class UserListActivity extends AppCompatActivity {
+public class UserListActivity extends BaseActivity {
     private static final String TAG = ConstantManager.TAG_PREFIX + "_UserListActivity";
 
     @BindView(R.id.main_coordinator_container)
@@ -58,6 +54,7 @@ public class UserListActivity extends AppCompatActivity {
     private MenuItem mSearchItem;
     private String mQuery;
     private Handler mHandler;
+    private ChronosConnector mConnector;
 
 
     @Override
@@ -68,6 +65,9 @@ public class UserListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mDataManager = DataManager.getInstance();
 
+        mConnector = new ChronosConnector();
+        mConnector.onCreate(this, savedInstanceState);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mHandler = new Handler();
@@ -77,6 +77,24 @@ public class UserListActivity extends AppCompatActivity {
         loadUsersFromDb();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        mConnector.onResume();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mConnector.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mConnector.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -92,12 +110,31 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     private void loadUsersFromDb() {
-
-        if (mDataManager.getUserListFromDb().size() == 0) {
-            showSnackbar("Список пользователей не может быть загружен");
-        } else {
-            showUsers(mDataManager.getUserListFromDb());
+        try {
+            showProgress();
+            mConnector.runOperation(new LoadFromDb(), false);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public void onOperationFinished(final LoadFromDb.Result result) {
+        mUsers = result.getOutput();
+        if (mUsers.size() == 0) {
+            showSnackbar(getString(R.string.error_load_users));
+        } else {
+            mUsersAdapter = new UserAdapter(mUsers, new UserAdapter.UserViewHolder.CustomClickListener() {
+                @Override
+                public void onUserItemClickListener(int position) {
+                    UserDTO userDTO = new UserDTO(mUsers.get(position));
+                    Intent profileIntent = new Intent(UserListActivity.this, ProfileUserActivity.class);
+                    profileIntent.putExtra(ConstantManager.PARCELABLE_KEY, userDTO);
+                    startActivity(profileIntent);
+                }
+            });
+            mRecyclerView.setAdapter(mUsersAdapter);
+        }
+        hideProgress();
     }
 
     private void setupDrawer() {
@@ -106,16 +143,6 @@ public class UserListActivity extends AppCompatActivity {
         TextView userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_txt);
         ImageView avatar = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.avatar_img);
 
-        /*navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                showSnackbar(item.getTitle().toString());
-                item.setCheckable(true);
-                mNavigationDrawer.closeDrawer(GravityCompat.START);
-                return false;
-            }
-        });*/
         userName.setText(mDataManager.getPreferencesManager().getFullName());
         userEmail.setText(mDataManager.getPreferencesManager().getEmail());
 
@@ -193,15 +220,18 @@ public class UserListActivity extends AppCompatActivity {
     private void showUserByQuery(String query) {
         mQuery = query;
 
-        Runnable searchUsers = new Runnable() {
-            @Override
-            public void run() {
-                showUsers(mDataManager.getUserListByName(mQuery));
-            }
-        };
-
-        mHandler.removeCallbacks(searchUsers);
-        mHandler.postDelayed(searchUsers, AppConfig.SEARCH_DELAY);
+        if (mQuery.isEmpty()){
+            mConnector.runOperation(new LoadFromDb(mQuery),false);
+        } else {
+            Runnable searchUsers = new Runnable() {
+                @Override
+                public void run() {
+                    mConnector.runOperation(new LoadFromDb(mQuery),false);
+                }
+            };
+            mHandler.removeCallbacks(searchUsers);
+            mHandler.postDelayed(searchUsers, AppConfig.SEARCH_DELAY);
+        }
 
     }
 }

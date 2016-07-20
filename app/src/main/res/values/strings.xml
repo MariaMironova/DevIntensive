@@ -40,5 +40,6 @@
     <string name="menu.profile">Мой профиль</string>
     <string name="menu.team">Команда</string>
     <string name="menu.exit">Выход</string>
+    <string name="error_load_users">Список пользователей не может быть получен</string>
     `
 </resources>
