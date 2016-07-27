@@ -35,5 +35,11 @@
     <string name="ups">Упс.. Что-то пошло не так..</string>
     <string name="auth.network_not_available">Сеть в данный момент не доступна, попробуйте позже</string>
     <string name="button.view">Просмотр</string>
+    <string name="search.title">Поиск пользователя</string>
+    <string name="search.input_name">Введите имя вользователя</string>
+    <string name="menu.profile">Мой профиль</string>
+    <string name="menu.team">Команда</string>
+    <string name="menu.exit">Выход</string>
+    <string name="error_load_users">Список пользователей не может быть получен</string>
     `
 </resources>

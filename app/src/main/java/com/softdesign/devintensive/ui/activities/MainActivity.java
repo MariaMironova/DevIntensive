@@ -102,6 +102,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Uri mSelectedImage = null;
     private Intent mUserAction;
     private ImageView mAvatar;
+    private TextView mFullName;
+    private TextView mUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,17 +255,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void setupDrawer() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mFullName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_txt);
+        mUserEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_txt);
         mAvatar = (ImageView) findViewById(R.id.avatar_img);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        mFullName.setText(mDataManager.getPreferencesManager().getFullName());
+        mUserEmail.setText(mDataManager.getPreferencesManager().getEmail());
 
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                showSnackbar(item.getTitle().toString());
-                item.setCheckable(true);
-                mNavigationDrawer.closeDrawer(GravityCompat.START);
-                return false;
+                switch (item.getItemId()) {
+                    case R.id.user_profile_menu:
+                        mNavigationDrawer.closeDrawer(GravityCompat.START);
+                        break;
+                    case R.id.team_menu:
+                        Intent profileIntent = new Intent(MainActivity.this, UserListActivity.class);
+                        startActivity(profileIntent);
+                        mNavigationDrawer.closeDrawer(GravityCompat.START);
+                        break;
+                    case R.id.exit_menu:
+                        mDataManager.getPreferencesManager().saveAuthToken("");
+                        Intent exitIntent = new Intent(MainActivity.this, AuthActivity.class);
+                        startActivity(exitIntent);
+                }
+                return true;
             }
         });
+
 
     }
 

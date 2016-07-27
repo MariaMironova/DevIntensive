@@ -101,7 +101,22 @@ public class PreferencesManager {
         editor.apply();
     }
 
+    public void saveFullName(String userName) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_FULLNAME_KEY, userName);
+        editor.apply();
+    }
+
     public String getUserId() {
         return mSharedPreferences.getString(ConstantManager.USER_ID_KEY, null);
     }
+
+    public String getEmail() {
+        return mSharedPreferences.getString(ConstantManager.USER_EMAIL_KEY, "");
+    }
+
+    public String getFullName(){
+        return mSharedPreferences.getString(ConstantManager.USER_FULLNAME_KEY, "");
+    }
+
 }
